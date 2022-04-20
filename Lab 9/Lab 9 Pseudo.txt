@@ -1,0 +1,103 @@
+Transcript Manager
+
+- Manages Courses for ONE PARTICULAR Student's transcript at a time
+
+   > Will utilize course item class
+
+   class Course:
+  
+   def __init__(self, coursecode, coursename, ccredits, grade, semester, instructor):
+      >self._coursecode for Course Code (str) (Ex. CS200) (UNIQUE) [USE upper()]
+      >self._coursename for Course Name (str) (Ex. Data Structures) (UNIQUE-ish)
+      >self._credits (int) (Ex. 4)
+      >self._grade for Grade (str) (Ex. A-)
+      >self._semester for Semester taken (str) (Ex. Fall 2020)
+      >self._instructor for Instructor name (str) (Ex. Dr. O'Neill)
+
+   def __str__(self):
+      return self._coursename + "\t\t\t\t\t\t" + self.coursecode + "\t" + str(self.credits) +
+             "\t" + self._grade + "\t" + self._semester + "\t\t" + self._instructor
+
+   # add appropriate mutators and getters
+
+Data Structure theory
+
+The amount of courses a student takes over their degree can be guessed to around 40+
+It's an AVL tree now since it would need to search a big(-ish) list of courses in low time.
+It is able to find courses within O(logn) time by searching UNIQUE attributes.
+Tree ADT. Will probably use many lists.
+
+In AVL, its predecessor, binary_search_tree, contains a __iter__ for for loops
+(you CAN LOOP over the structure)
+
+Course codes = Keys if format is consistent (No whitespace for this implementation)
+
+All of this is done in a main while loop, This is a more advanced version of lab 5.
+
+CLASS TRANSCRIPT:
+
+Prompts asking for UNIQUE means asking for NAME or COURSE CODE
+
+> Methods that rely on Getters
+
+   * Look-up course, Must be able to look up UNIQUE attributes of a course and return item
+     - AVLTree[Course Code] to locate
+     - try and except KeyError to tell user that course has not been found
+
+   * Find, Must be able to loop through items with similar item attributes across
+     courses and return/print those courses
+     - find_range in BST
+
+   * Show all, Implement __str__ that creates a simple row based table
+     - inorder iteration of item objects, use for loop and print to display
+
+   * Calculate GPA, get GPA for course by:
+     - Getting self._credits integer
+     - Interpreting self._grade string into a float using if-else comparison strings
+       -- Make this a private method
+     - Do calculation of interpreted grade * credits and return
+     - Loop all returns of above calculation into a list
+     - Sum credits from all items in the same loop
+     - Sum list up and divide by total number of credits
+
+   * Calculate Field GPA,
+     - Loop through structure to find course codes that contain user inputted course code
+       -- If found get the interpreted grade * credits and return into a list
+       -- Keep track of total credits sum during this
+     - Sum list up and divide by total credits
+
+> ADDING UPDATING AND REMOVING WITH UNDO AND REDO (THE SETTERS)
+
+   * Add new Course item, take user inputs and put them into a class item,
+     then search structure for any of the UNIQUE variables and find equal items.
+     If an equal item is found, inform user that the course already exists.
+
+   * Update Course item, take user input for a UNIQUE attribute first to find Item
+     Ask user a prompt of what to change about the Course Item
+      - IF IT IS THE COURSE CODE PREPARE MOVEMENT OF ITEM THROUGH KEY
+       -- record Course Item in a variable
+       -- delete Course Item from tree, del AVLTree[old course code]
+       -- then do AVLTree[new course code] = Item
+      - else update the course attribute
+
+   * Delete Course item
+      - try del AVLTree[old course code], except for KeyError
+     
+   * Undo and Redo are two stacks, THEY RECORD COURSE ITEMS
+      -- They store items and record methods so that they can do the opposite
+      -- Undone actions will be the first stack
+      -- Actions that CAN be redone are second stack
+         - Calling undo will create an object in the redo stack
+       --- IF UNDONE STACK IS PUSHED ONTO, CLEAR REDONE STACK
+      -- CLEAR UNDO AND REDO AFTER CLOSING A SESSION
+
+> File input/output
+   * User works with an empty new file first before saving/loading (consult lab 5)
+   * Use readlines and then seperate them into lists to be put into an item (DONT DO THIS JUST USE PICKLE)
+
+====== General Plan ======
+START WITH WHILE LOOP
+- Create Course class and Course class methods
+- Implement Add new Course Item
+- Implement Look-up Course
+- Implement Show All
